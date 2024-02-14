@@ -49,7 +49,7 @@ public class InputStream_main_04 {
 	   int cnt = 0;
 	   
 	   while( (input_length = System.in.read(data_arr)) != -1) { // read(byte[])얘 자체가 파라미터에 배열데이터타입이 있는것임.  전 read는 글자 한개 읽어오는거라 넘 느리니까
-		  //키보드로 컨트롤 씨(강제종료)를 누르지 않으면 계속 실행해라.
+		  //키보드로 컨트롤 z(강제종료)를 누르지 않으면 계속 실행해라.
 		   
 		 /*
            System.in.read(data_arr)은 
@@ -64,12 +64,14 @@ public class InputStream_main_04 {
                data_arr 에는  "울시홍대입" 이 들어가고, input_length 에는 10 이 들어간다.
             
             반복문의 세번째일때
-               data_arr 에는  "구" 가 들어가고, input_length 에는 2 가 들어간다.   
+               data_arr 에는  "구" 가 들어가고, input_length 에는 4 가 들어간다.   
          */
 		   
 		   System.out.write(data_arr, 0, input_length);
 		   // 배열 data_arr 에 저장된 데이터에서 시작점이 0번째 index 부터(처음부터) input_length byte수 만큼 출력해라는 말이다.
 		   System.out.flush();
+		   
+		   totalByte += input_length; // 10 + 10 + 4
 		   
 		   cnt++;
 		   
@@ -77,7 +79,7 @@ public class InputStream_main_04 {
 	   };  //end of while-------------------------------------------------
 	   
 	   
-	   System.out.println("총 : " + (cnt - 2) + "byte 입력함");  // -2로 엔터 없앰
+	   System.out.println("총 : " + (totalByte - 2) + "byte 입력함");  // -2로 엔터 없앰
 	   System.out.println("반복횟수 : " +cnt + "번 반복함" );
 	   
  
