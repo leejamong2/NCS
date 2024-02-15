@@ -104,6 +104,84 @@ public class File_main {
 		
 		
 		
+		
+		System.out.println("\n====================================");
+		System.out.println(">>> 파일 삭제하기 <<<");
+		
+		boolean is_delete_ok = file_2.delete(); //파일 삭제하기
+		String result = is_delete_ok? "C:/NCS/iotestdata/MyDir/테스트1.txt  파일삭제 성공!!" : "C:/NCS/iotestdata/MyDir/테스트1.txt  파일삭제 실패ㅜㅜ";
+		
+		System.out.println(result);
+		//C:/NCS/iotestdata/MyDir/테스트1.txt  파일삭제 성공!!
+		
+		
+		
+		
+		System.out.println("\n====================================");
+		System.out.println(">>> 텅빈디렉토리(폴더) 삭제하기 <<<");
+		
+		if(dir.exists()) { //dir 은  C:\NCS\iotestdata\MyDir 의 폴더
+			is_delete_ok = dir.delete(); //텅빈 디렉토리 삭제 (텅빈 폴더만 삭제)
+			result = is_delete_ok? "C:\\NCS\\iotestdata\\MyDir  폴더삭제 성공!!" : "C:\\NCS\\iotestdata\\MyDir  폴더삭제 실패ㅜㅜ";
+			System.out.println(result);
+			//C:\NCS\iotestdata\MyDir  폴더삭제 성공!!
+		}
+		
+		
+		
+		
+		
+		System.out.println("\n====================================");
+		System.out.println(">>> 내용물이 들어있는 디렉토리(폴더) 삭제하기 실패한 예제 <<<");
+		// 먼저 아래의 실습을 하려면 탐색기에서 C:\NCS\iotestdata 밑에 images 라는 폴더를 생성하고
+		//images 폴더 속에 파일을 몇 개 올려둔다.
+		
+		File images_dir = new File("C:/NCS/iotestdata/images");
+		
+		if(images_dir.exists()) { //images_dir 은  C:/NCS/iotestdata/images 의 폴더
+			is_delete_ok = images_dir.delete(); //텅빈 디렉토리 삭제
+			result = is_delete_ok? "C:/NCS/iotestdata/images  폴더삭제 성공!!" : "C:/NCS/iotestdata/images  폴더삭제 실패ㅜㅜ";
+			System.out.println(result);
+			//C:/NCS/iotestdata/images  폴더삭제 실패ㅜㅜ
+		}
+		
+		
+		
+		System.out.println("\n====================================");
+		System.out.println(">>> 내용물이 들어있는 디렉토리(폴더) 삭제하기 성공한 예제 <<<");
+		
+		//1.내용물이 들어있는 디렉토리(폴더)내에 존재하는 내용물을 파악한다.
+		File[] file_arr = images_dir.listFiles();  //폴더 속에 있는 내용물을 알려준다
+		
+		for(int i=0; i<file_arr.length; i++) {
+			if(file_arr[i].isFile()) { //이것 안에 내용물이 파일이라면
+				System.out.println(file_arr[i].getAbsolutePath()); //경로명과 파일네임 알아와서 찍어본다
+			}
+		}//end of for---------------------
+		/*
+		 	C:\NCS\iotestdata\images\01.png
+			C:\NCS\iotestdata\images\02.png
+			C:\NCS\iotestdata\images\03.png
+			C:\NCS\iotestdata\images\04.png
+			C:\NCS\iotestdata\images\12.png
+			C:\NCS\iotestdata\images\15.png
+			C:\NCS\iotestdata\images\20.png
+			C:\NCS\iotestdata\images\쉐보레전면.jpg
+		 */
+		
+		//C:\NCS\iotestdata\images 이 폴더 내의 파일들을 모두 삭제한다.
+		for(int i=0; i<file_arr.length; i++) {
+			if(file_arr[i].isFile()) { //이것 안에 내용물이 파일이라면
+				file_arr[i].delete();
+			}
+		}//end of for---------------------
+		
+		is_delete_ok = images_dir.delete(); //텅빈 디렉토리 삭제
+		result = is_delete_ok? "C:/NCS/iotestdata/images  폴더삭제 성공!!" : "C:/NCS/iotestdata/images  폴더삭제 실패ㅜㅜ";
+		System.out.println(result);
+		//C:/NCS/iotestdata/images  폴더삭제 성공!!
+		
+		
 		sc.close();
 		
 
