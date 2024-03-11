@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class DML_update_PreparedStatement_04 {
+public class DML_update_PreparedStatement_04_2 {
 
    public static void main(String[] args) {
       Connection conn = null; 
@@ -38,12 +38,9 @@ public class DML_update_PreparedStatement_04 {
          System.out.print("▷ 연결할 오라클 서버의 IP 주소 : ");
          String ip = sc.nextLine();  // 127.0.0.1
          
-         conn = DriverManager.getConnection("jdbc:oracle:thin:@"+ip+":1521:xe", "JDBC_USER", "gclass"); //ip 서버 연결
+         conn = DriverManager.getConnection("jdbc:oracle:thin:@"+ip+":1521:xe", "JDBC_USER", "gclass");
          
-         // === Connection conn 에서 DML의 기본값은 auto commit 이다. === //
-         // === Connection conn 에서 DML의 기본값인 auto commit 을 수동 commit 으로 전환하겠습니다. === //
-            conn.setAutoCommit(false); // 수동 commit 으로 전환됨.
-         // conn.setAutoCommit(true); // 자동 commit 으로 전환됨.
+         
          
          // >>> 3. SQL문(편지)을 작성한다. <<<
          String sql = " select no, name, msg, to_char(writeday, 'yyyy-mm-dd hh24:mi:ss') AS writeday "
@@ -198,19 +195,8 @@ public class DML_update_PreparedStatement_04 {
 	    	   if(new_msg.isEmpty()) { //그냥 엔터라면
 	    		   new_msg = before_msg;
 	    	   }
-    	   sql = " update tbl_memo set name = ?, msg = ?, updateday = sysdate"
-					+ " where no = ? ";
-    	   
-    	   pstmt = conn.prepareStatement(sql);
-    	   pstmt.setString(1, new_name);
-    	   pstmt.setString(2, new_msg);
-    	   pstmt.setString(3, no);
-    	   
-    	   int n = pstmt.executeUpdate(); 
-    	   
-    	   if(n==1) {
-    		   // n==1 이라는 것은 update 구문이 성공되었다는 말이다.
-    		   String yn = "";
+	    	   
+	    	   String yn = "";
                
                
                do {
@@ -219,41 +205,67 @@ public class DML_update_PreparedStatement_04 {
                   yn = sc.nextLine();
 
                   if ("y".equalsIgnoreCase(yn)) { // y의 대소문자 구별 없이 Y나 y둘다 가능
-                     conn.commit(); // 수동 커밋 -> 데이터 입력 한다.
-                     System.out.println(">> 데이터 수정 성공!! <<");
-                     
-                     System.out.println("\n=== 수정한 후 내용 ===");
-                     
-                     sql = " select name, msg " 
-                        + " from tbl_memo " 
-                        + " where no = to_number(?) ";
+                    
+                	  sql = " update tbl_memo set name = ?, msg = ?, updateday = sysdate"
+          					+ " where no = ? ";
+              	   
+	              	   pstmt = conn.prepareStatement(sql);
+	              	   pstmt.setString(1, new_name);
+	              	   pstmt.setString(2, new_msg);
+	              	   pstmt.setString(3, no);
+	              	   
+	              	   int n = pstmt.executeUpdate(); 
+	              	   
+		               if(n==1) {
+		          		     // n==1 이라는 것은 update 구문이 성공되었다는 말이다.
+		            	   
+		            	     System.out.println(">> 데이터 수정 성공!! <<");
+		                     
+		                     System.out.println("\n=== 수정한 후 내용 ===");
+		                     
+		                     sql = " select name, msg " 
+		                        + " from tbl_memo " 
+		                        + " where no = to_number(?) ";
 
-                     pstmt = conn.prepareStatement(sql);
-                     pstmt.setString(1, no);
+		                     pstmt.close();
+		                     pstmt = conn.prepareStatement(sql);  //노란줄이면 프리~스테이트먼트 닫아라 는말 윗줄처럼
+		                     pstmt.setString(1, no);
+		                     
+		                     
+		                     rs = pstmt.executeQuery();   // sql문 실행
+		                     
+		                     
+		                     rs.next();
+		                     
+		                     String name = rs.getString(1);
+		                     String msg = rs.getString(2);
+		                     
+		                     System.out.println("▷ 글쓴이" + name);
+		                     System.out.println("▷ 글내용" + msg);
+		            	   
+		            	   
+		          	   }
+	                	  
+                	  
+                	  
                      
-                     
-                     rs = pstmt.executeQuery();   // sql문 실행
-                     
-                     
-                     rs.next();
-                     
-                     String name = rs.getString(1);
-                     String msg = rs.getString(2);
-                     
-                     System.out.println("▷ 글쓴이" + name);
-                     System.out.println("▷ 글내용" + msg);
                      
                   } else if ("n".equalsIgnoreCase(yn)) { // y의 대소문자 구별 없이 Y나 y둘다 가능
-                     conn.rollback(); // 롤백 -> 데이터 입력 취소한다.
                      System.out.println(">> 데이터 수정 취소 !! <<");
-                     
-                  } else {
+                  } 
+                  
+                  else {
                      System.out.println(">> Y or N 만 입력하세요!! << \n");
                   }
                   /////////////////////////////////////////////////////////////
                } while (!("y".equalsIgnoreCase(yn) || "n".equalsIgnoreCase(yn))); // (!(탈출조건))
 
-            }
+            
+	    	   
+	    	   
+    	   
+    	   
+    	  
     		   
        }
        else { //수정해야할 글번호가 DB에 존재 하지 않는 경우

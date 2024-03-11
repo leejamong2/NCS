@@ -49,13 +49,18 @@ order by no desc;
 select no, name, msg, to_char(writeday, 'yyyy-mm-dd hh24:mi:ss') AS writeday from tbl_memo order by no desc;
 
 update tbl_memo set writeday = writeday - 1
-where no between 1 and 2
+where no between 1 and 2;
 
 commit;
 
 select no, name, msg, to_char(writeday, 'yyyy-mm-dd hh24:mi:ss') AS writeday
 from tbl_memo
-where no = '1'
+where no = '1' --자동형변환.  
+order by no desc;
+
+select no, name, msg, to_char(writeday, 'yyyy-mm-dd hh24:mi:ss') AS writeday
+from tbl_memo
+where name = '이지운'
 order by no desc;
 
 select no, name, msg, to_char(writeday, 'yyyy-mm-dd hh24:mi:ss') AS writeday
@@ -72,6 +77,32 @@ order by no desc;
 
 
 
+--tbl_memo 테이블에 updateday컬럼을 추가합니다
+alter table tbl_memo
+add updateday date;
+--Table TBL_MEMO이(가) 변경되었습니다.
+
+select name, msg, updateday
+from tbl_memo
+where no = 1;
+
+update tbl_memo set name = '지윤이', msg = 'ㄴㄴㄴㄴㄴ'
+where no = 1;  
+
+commit;  --커밋을 해야 이클립스에서 정말수정? 나타남
+
+select name, msg, updateday
+from tbl_memo
+where no = 1;
+
+
+select *
+from user_tables
+where table_name = 'TBL_MEMO';
+
+select *
+from user_sequences
+where sequence_name = 'SEQ_MEMO';
 
 
 
