@@ -20,7 +20,6 @@ public class MemberCtrl {
 		
 		MemberDTO member = null;
 		String s_Choice = "";
-		
 		boolean isLogin = false;  //맨첨엔 폴스였다가 로그인이 성공되어지면 true 로 바꿀겨
 		
 		if(isLogin == false) { //로그인을 하기 전 이라고 확실하게 정의해줘써
